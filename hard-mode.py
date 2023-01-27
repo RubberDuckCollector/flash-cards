@@ -37,7 +37,7 @@ def main():
         Body parts (Type: "{Color.LightCyan}body{Color.Reset}" to revise this")
         Countries in europe (Type: "{Color.LightCyan}europe{Color.Reset}" to revise this")
         Numbers (Type: "{Color.LightCyan}numbers{Color.Reset}" to revise this")""")
-        set = input("> ").lower().replace(" ", "").replace("\t", "")
+        set = input("> ").lower().replace(" ", "").replace("\t", "") # set means the set of flash cards the user chooses to do
         
         match set:
             case "1":
@@ -120,8 +120,8 @@ def main():
     
         for i in range(len(words)):
             flashcards.append([words[i]])
-    # use nested list comprehension to split the strings
-    flashcards = [[card.strip() for card in item.rsplit(',', 1)] for sublist in flashcards for item in sublist]
+    # use nested list comprehension to split the strings on every |
+    flashcards = [[card.strip() for card in item.rsplit('|')] for sublist in flashcards for item in sublist]
     
     cards_no_brackets = copy.deepcopy(flashcards) # copy.deepcopy() makes it so the lists are truly different and they will not reference each other, so changing one won't change both
     
@@ -137,7 +137,7 @@ def main():
                 item = re.sub(pattern, '', item).rstrip()
                 # Check if any replacement was made
                 if original_card != item:
-                    # Append the indexes of the modified sublists
+                    # a list is appended every time the code finds a flash card with brackets
                     indices.append([i, j])
                 # Update the modified string back into the cards_no_brackets list
                 cards_no_brackets[i][j] = item
@@ -197,9 +197,8 @@ def main():
         return incorrect
     
     incorrect = questions(cards_no_brackets)
-    print(indices)
+    # print(indices)
 
 if __name__ == '__main__':
     main()
-
-# TODO: make the rounds system (VERY HARD)
+   
